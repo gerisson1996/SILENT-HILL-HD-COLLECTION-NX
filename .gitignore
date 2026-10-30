@@ -41,3 +41,6 @@ app/shaders/*.bin
 
 # --- Homebrew menu icons, cut from the dashboard art on the user's own disc (not distributed) ---
 tools/switch/icon/*.jpg
+
+# --- The published NRO (V1.0) ---------------------------------------------------
+!release/sh3.nro
