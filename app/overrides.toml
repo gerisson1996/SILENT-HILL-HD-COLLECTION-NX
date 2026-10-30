@@ -1,0 +1,53 @@
+# ============================================================================
+#  Silent Hill 3 - manual declarations for the codegen
+#
+#  Included from sh3_manifest.toml via includes = ["overrides.toml"].
+#  Included files use the flat schema (sections at the root), not the one
+#  nested under [entrypoint] in the manifest.
+#
+#  Root keys (cr_as_local, non_volatile_as_local, ...) must go above the
+#  first [table], or TOML puts them inside it and the codegen ignores them.
+# ============================================================================
+
+# The CRT's setjmp/longjmp. D3DX's image loader tries one format after another, and its JPEG reader leaves a
+# file that is not a JPEG through error_exit (0x82334E60) -> longjmp. Translated as plain functions, longjmp's blr
+# came back into read_markers with the setjmp frame's registers and the next indirect call went nowhere (crash
+# at the save screen, NRO 47E57374).
+setjmp_address = 0x823CC7C0
+longjmp_address = 0x823CC380
+
+# CPU, stage 1 (2026-10-30). None of these were set: every register lived in the ctx struct, a load and a store
+# around each use. At the stock 1020 MHz gameplay ran 37-40 ms of work a frame (20 fps paced), 30 fps needs < 33.3.
+# The set sa2-nx and nfsmw-nx run with (sa2-nx's perf_overrides.toml explains each one). Our hooks read only the
+# argument registers (r1, r3-r10, f1), and the setjmp sites save and restore the locals (ppc_setjmp), so the
+# non-volatile registers as locals are safe here.
+# Left for a later stage: non_argument_as_local (__savevmx_N takes r12 as a base: needs its keep list), the FP-mode
+# options (fp_*), elide_lr_stores and skip_lr.
+cr_as_local = true
+ctr_as_local = true
+xer_as_local = true
+reserved_as_local = true
+non_volatile_as_local = true
+skip_msr = true
+dform_disp_split = true
+div_inline = true
+fcti_inline = true
+fctiwz_inline = true
+rotate_word_shifts = true
+dcbt_prefetch = true
+
+# ----------------------------------------------------------------------------
+#  FUNCTIONS DECLARED BY HAND
+#
+#  Key = start address (hex, in quotes). Fields, all optional:
+#    name             symbol name (default: sub_XXXXXXXX)
+#    size / end       size in bytes, or end address (mutually exclusive)
+#    parent           address of the parent function (discontiguous fragment)
+#    share_registers  the fragment shares the parent's registers
+# ----------------------------------------------------------------------------
+[functions]
+
+# First codegen (Validate): targets of plain branches ("b", tail calls) that the
+# analysis did not mark as function starts. The analyzer finds their bounds.
+"0x82314BD0" = {}   # b from 0x82314D94
+"0x820A9208" = {}   # b from 0x8226E9D0 and 0x8226EDA4
