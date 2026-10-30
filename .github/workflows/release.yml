@@ -1,0 +1,39 @@
+# Publishes release/sh3.nro as the v1.0 release (the NRO and a zip with the SD card's layout), with the notes in
+# .github/release-v1.0.md. Runs when the NRO or this file is pushed to main; an existing release gets its files
+# replaced.
+name: Release
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - release/sh3.nro
+      - .github/release-v1.0.md
+      - .github/workflows/release.yml
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Publish v1.0
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ ! -f release/sh3.nro ]; then
+            echo "release/sh3.nro is not in the repository: nothing to publish"
+            exit 0
+          fi
+          mkdir -p pkg/switch/sh3-nx
+          cp release/sh3.nro pkg/switch/sh3-nx/sh3.nro
+          (cd pkg && zip -9 -r ../SH3-NX-V1.0.zip switch)
+          if gh release view v1.0 >/dev/null 2>&1; then
+            gh release upload v1.0 release/sh3.nro SH3-NX-V1.0.zip --clobber
+            gh release edit v1.0 --title "Silent Hill 3 NX — V1.0" --notes-file .github/release-v1.0.md
+          else
+            gh release create v1.0 release/sh3.nro SH3-NX-V1.0.zip --verify-tag \
+              --title "Silent Hill 3 NX — V1.0" --notes-file .github/release-v1.0.md
+          fi
