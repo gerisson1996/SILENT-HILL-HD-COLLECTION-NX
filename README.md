@@ -1,93 +1,126 @@
-# Silent Hill 3 (HD Collection), Nintendo Switch port (sh3-nx)
+# SILENT HILL HD COLLECTION NX
 
-Unofficial fan project, not affiliated with Konami. A native Switch port of Silent Hill 3 from the Xbox 360
-Silent Hill HD Collection: the PowerPC code of `sh3_360.xex` is statically recompiled to C++ with
-[ReXGlue](https://github.com/rexglue/rexglue-sdk) and built for the Switch with devkitA64 and libnx. It is not an
-emulator. Android and iOS are planned next.
+**Silent Hill 3** (Silent Hill HD Collection, Xbox 360) no **Nintendo Switch**, como homebrew (`.nro`), por
+**recompilação estática**. O código PowerPC do `sh3_360.xex` é traduzido para C++ com
+[ReXGlue](https://github.com/rexglue/rexglue-sdk) e compilado para ARM64. Não é emulação: o jogo roda nativo, com o
+Direct3D 9 do Xbox 360 reescrito sobre o deko3d, a API gráfica nativa do Switch.
 
-Nothing from the game is in this repository. You need your own Xbox 360 copy of the game.
-
-`sdk/` and `tools/` started as a copy of shh-nx's (Silent Hill: Homecoming). They are this project's own from then
-on: fixes here do not go back there, and the other way round.
-
-## Status (V1.0, 2026-10-30)
-
-| Platform | State |
+| | |
 |---|---|
-| Nintendo Switch | V1.0: intro, menus and gameplay at 30 fps at the stock clock (CPU 1020 MHz) |
-| Android | planned |
-| iOS | planned |
+| **Versão** | V1.0 |
+| **Estado** | Jogável: intro, menus, gameplay e áudio, a **30 fps** no clock original do console |
+| **Download** | `sh3.nro` em [Releases](https://github.com/gerisson1996/SILENT-HILL-HD-COLLECTION-NX/releases) |
+| **Próximo** | Android e iOS; depois o Silent Hill 2 da mesma coleção |
 
-### O que já funciona
+### ☕ Apoie o projeto
 
-- Silent Hill 3 roda nativo no Switch (NRO), sem emulador: intro, menus, gameplay, áudio e a tela de save.
-- 30 fps no gameplay com o clock original da CPU (1020 MHz), testado no modo portátil.
-- Renderer nativo em deko3d (Renut): shaders do jogo traduzidos e compilados no próprio console, com cache em
-  `deko3d_shaders.bin` no cartão.
-- Resolução 720p no portátil e 1080p no dock (`sh3_resolution`, `sh3_resolution_docked`).
-- Brilho ajustável (`sh3_output_gamma`) e menu do port (L+R+Plus).
-- Otimizações de CPU no gerador de código (registradores como variáveis locais, `skip_msr`, divisões e conversões
-  inline), que levaram o gameplay de 20 para 30 fps.
-- Corrigido: crash ao entrar na primeira área (falsos thunks em `app/thunks.toml`) e crash na tela de save (o leitor
-  JPEG do D3DX usa `setjmp`/`longjmp`, agora declarados em `app/overrides.toml`).
+**Precisamos da sua ajuda!** As ferramentas que uso para fazer estes ports são **pagas**, e cada doação ajuda a
+mantê-las e a continuar o projeto. Quer ver outro jogo portado ou uma melhoria? **Faça seu pedido junto com a sua
+doação** (escreva na mensagem do Ko-fi, do PayPal ou do Pix).
 
-### O que falta
+Se o port foi útil para você, considere apoiar:
 
-- Pré-compilar o cache de shaders (`tools/deko3d_variant_cache.py`), para o console não compilar variantes durante o
-  jogo nas áreas novas.
-- Testar o jogo inteiro do começo ao fim; até agora foram testadas as primeiras áreas.
+- **Ko-fi:** [ko-fi.com/gerissoncassiano](https://ko-fi.com/gerissoncassiano)
+- **PayPal:** [Doar pelo PayPal](https://www.paypal.com/donate/?hosted_button_id=B3YTKT29F5ZLG)
+- **Pix:** `pocketneogames@gmail.com`
+
+> [!IMPORTANT]
+> Este repositório **não contém nenhum arquivo do jogo** nem o código gerado a partir dele. Você precisa da sua
+> própria cópia original do Silent Hill HD Collection de Xbox 360.
+
+---
+
+## O que já funciona
+
+- O jogo inteiro roda nativo no Switch: intro, menus, gameplay, áudio e a tela de save.
+- **30 fps** no gameplay com o clock original da CPU (1020 MHz), testado no modo portátil.
+- Renderizador nativo em deko3d: os shaders do jogo são traduzidos e compilados no próprio console e guardados em
+  `deko3d_shaders.bin`, então cada variante só é compilada uma vez.
+- **720p** no portátil e **1080p** no dock.
+- Menu do port (**L + R + Plus**) com o brilho da imagem.
+- Testado com a coleção em PT-BR.
+
+## O que falta
+
+- Pré-compilar o cache de shaders, para o console não compilar variantes durante o jogo nas áreas novas.
+- Testar o jogo inteiro do começo ao fim (até agora foram testadas as primeiras áreas).
 - Android e iOS.
-- Silent Hill 2 (`sh2_360.xex`) e o launcher da coleção (`default.xex`): ainda não traduzidos.
+- Silent Hill 2 (`sh2_360.xex`) e o launcher da coleção (`default.xex`).
 
-### Notes from the translation
+---
 
-- Game: Title ID `4B4E0845`, Media ID `625FCB0C`, version 0.0.0.5, XEX file time 2012-02-22. Code 820A0000-823E70FC.
-- The first codegen failed on two branch targets with no function; they are declared in `app/overrides.toml`.
-  It then writes 59 C++ files (about 60 MB) in a few seconds.
-- The first run died on `Call to invalid or unregistered function at guest address 0x8237FF20`: a run of
-  "this" adjusting thunks (`addi r3,r3,-4; b method`) folded together with the function after it. `tools/thunks.py`
-  lists them all (45 thunks, 11 glued functions) in `app/thunks.toml`. `tools/huecos.py --min 8` plus
-  `tools/huecos_conflictos.py` leave 79 gaps in `app/huecos.toml`; the codegen then gives no warnings.
-- `NtQueryInformationFile(XFileXctdCompressionInformation)` is unimplemented; the game asks at every file open and
-  goes on without it (logged once).
+## Instalar no Switch
 
-## The disc
+```
+sdmc:/switch/sh3-nx/sh3.nro
+sdmc:/switch/sh3-nx/game_root/sh3_360.xex   <- do seu disco
+sdmc:/switch/sh3-nx/game_root/sh3_360/      <- a pasta do SH3 do seu disco (com data/)
+```
 
-| File | What |
+- Precisa de Atmosphère e hbmenu.
+- Abra em **modo título**: segure **R** ao abrir um jogo instalado e escolha o Silent Hill 3 no hbmenu.
+- A primeira vez em cada área compila os shaders dela (alguns segundos); da segunda em diante já sai do cache.
+- Os logs ficam em `sdmc:/switch/sh3-nx/logs/`.
+
+---
+
+## Como funciona
+
+| Pasta | O que é |
 |---|---|
-| `default.xex` + `data\` | The collection's launcher (choose SH2 or SH3). Not translated: this port starts SH3 directly |
-| `sh2_360.xex` + `sh2_360\` | Silent Hill 2. Not part of this project yet |
-| `sh3_360.xex` + `sh3_360\data\` | Silent Hill 3, about 3.7 GB in 7,142 files |
+| `app/` | O port: configuração do gerador de código (`overrides.toml`, `thunks.toml`, `huecos.toml`), o aplicativo (`src/sh3_app.h`) e o renderizador Renut (`src/renut_engine`), que troca o Direct3D 9 do Xbox 360 por deko3d. |
+| `sdk/` | O SDK de recompilação [ReXGlue](https://github.com/rexglue/rexglue-sdk) v0.10.0, com a camada do Switch (memória, arquivos no SD, threads, áudio). |
+| `app/thirdparty/` | plume (abstração gráfica), XenosRecomp (shaders do Xenos para HLSL/GLSL), uam (compilador de shaders do deko3d) e Dear ImGui. |
+| `tools/` | Scripts de build e de análise do `.xex` (thunks, lacunas de código, shaders do deko3d). |
+| `docs/` | Notas técnicas: [tradução do `.xex`](docs/notas-traducao.md) e [renderizador](docs/plano-renut.md). |
 
-The whole disc folder is the game root (`game:\`), as on the console; `app/src/sh3_app.h` loads
-`game:\sh3_360.xex` instead of `default.xex`.
+---
 
-## Building
+## Compilar
 
-The build runs on Windows: Visual Studio 2022 Build Tools, LLVM clang 18+, Python 3.10+, Git and devkitPro
-(devkitA64, libnx, deko3d).
+### Requisitos
 
-Code generator:
+- **Windows** com **Visual Studio 2022 Build Tools** ("Desenvolvimento para desktop com C++" e "Ferramentas do C++
+  Clang") e **LLVM clang 18+**.
+- **devkitPro** com `switch-dev`, libnx e deko3d.
+- **Python 3.10+** e **Git**.
+- O repositório num caminho **sem acento e sem espaço** (ex.: `C:\dev\sh3-nx`).
 
-```bat
-tools\build_host.bat
-```
+### Passos
 
-Put the disc files in `assets\game_root`, then translate the game:
+1. Compilar o gerador de código:
 
-```sh
-REXGLUE=sdk/out/win-amd64/rexglue.exe tools/codegen.sh app
-```
+   ```bat
+   tools\build_host.bat
+   ```
 
-The C++ goes to `app/generated/sh3` and the log to `app/codegen.log`. Then the Switch NRO (Renut on deko3d):
+2. Colocar os arquivos do seu disco em `assets\game_root` (o `sh3_360.xex` e a pasta `sh3_360\`) e traduzir o jogo,
+   o que gera `app/generated/sh3`:
 
-```bat
-tools\build_switch.bat C:\path\to\nvk_sdk nonvk
-```
+   ```sh
+   REXGLUE=sdk/out/win-amd64/rexglue.exe tools/codegen.sh app
+   ```
 
-It writes `out\switch-deko\sh3.nro`; copy it to `sdmc:/switch/sh3-nx/` with the shader package.
+3. Compilar o `.nro` (deko3d):
 
-## License
+   ```bat
+   tools\build_switch.bat C:\caminho\para\nvk_sdk nonvk
+   ```
 
-GPL-3.0 for the main source, inherited from shh-nx and nfsmw-nx. The SDK and third-party parts keep their own
-licenses; see `THIRD_PARTY_NOTICES.md`.
+   O resultado fica em `out\switch-deko\sh3.nro`.
+
+---
+
+## Créditos
+
+- **ReXGlue SDK**: Tom Clay, com partes do [Xenia](https://xenia.jp) (BSD-3-Clause)
+- **Renderizador Renut**: dos ports sa2-nx e banjo-nx
+- **XenosRecomp**: hedge-dev (MIT)
+- **deko3d e uam**: fincs (devkitPro)
+- **Port para Switch**: RECOMP-GUTO (gerisson1996)
+- **Bibliotecas**: libnx/devkitPro, plume, glslang, SPIRV-Tools, FFmpeg, Dear ImGui, toml++, fmt, spdlog; veja
+  [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)
+
+Licença GPL-3.0 para o código principal; o SDK e as bibliotecas mantêm as suas próprias licenças.
+
+Silent Hill é marca da Konami Digital Entertainment. Este projeto não tem relação com ela.
