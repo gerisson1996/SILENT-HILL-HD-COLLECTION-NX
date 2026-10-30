@@ -149,9 +149,14 @@ u32 NtQueryInformationFile_entry(u32 file_handle, ppc_ptr_t<X_IO_STATUS_BLOCK> i
       break;
     }
     case XFileXctdCompressionInformation: {
-      REXKRNL_ERROR(
-          "NtQueryInformationFile(XFileXctdCompressionInformation) "
-          "unimplemented");
+      // sh3-nx (2026-10-30): Silent Hill 3 asks at every file open and goes on without it: logged once.
+      static bool logged = false;
+      if (!logged) {
+        logged = true;
+        REXKRNL_WARN(
+            "NtQueryInformationFile(XFileXctdCompressionInformation) "
+            "unimplemented (logged once)");
+      }
       // Files that are XCTD compressed begin with the magic 0x0FF512ED but we
       // shouldn't detect this that way. There's probably a flag somewhere
       // (attributes?) that defines if it's compressed or not.

@@ -36,10 +36,6 @@ on: fixes here do not go back there, and the other way round.
 - Pré-compilar o cache de shaders (`tools/deko3d_variant_cache.py`), para o console não compilar variantes durante o
   jogo nas áreas novas.
 - Testar o jogo inteiro do começo ao fim; até agora foram testadas as primeiras áreas.
-- Limpar o log: as linhas de diagnóstico `[sh3 diag]` e o aviso de `XFileXctdCompressionInformation` a cada arquivo
-  aberto.
-- Opções de gerador de código ainda desligadas (`non_argument_as_local`, modos `fp_*`, `elide_lr_stores`): mais
-  desempenho de CPU, se forem seguras.
 - Android e iOS.
 - Silent Hill 2 (`sh2_360.xex`) e o launcher da coleção (`default.xex`): ainda não traduzidos.
 
@@ -52,8 +48,8 @@ on: fixes here do not go back there, and the other way round.
   "this" adjusting thunks (`addi r3,r3,-4; b method`) folded together with the function after it. `tools/thunks.py`
   lists them all (45 thunks, 11 glued functions) in `app/thunks.toml`. `tools/huecos.py --min 8` plus
   `tools/huecos_conflictos.py` leave 79 gaps in `app/huecos.toml`; the codegen then gives no warnings.
-- `NtQueryInformationFile(XFileXctdCompressionInformation)` is logged as unimplemented on every file open; the game
-  goes on.
+- `NtQueryInformationFile(XFileXctdCompressionInformation)` is unimplemented; the game asks at every file open and
+  goes on without it (logged once).
 
 ## The disc
 
