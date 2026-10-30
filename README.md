@@ -1,5 +1,7 @@
 # SILENT HILL HD COLLECTION NX
 
+🇧🇷 **Português** · 🇺🇸 [English](README.en.md) · 🇪🇸 [Español](README.es.md)
+
 **Silent Hill 3** (Silent Hill HD Collection, Xbox 360) no **Nintendo Switch**, como homebrew (`.nro`), por
 **recompilação estática**. O código PowerPC do `sh3_360.xex` é traduzido para C++ com
 [ReXGlue](https://github.com/rexglue/rexglue-sdk) e compilado para ARM64. Não é emulação: o jogo roda nativo, com o
