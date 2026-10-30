@@ -11,7 +11,7 @@ con el Direct3D 9 de Xbox 360 reescrito sobre deko3d, la API gráfica nativa de 
 |---|---|
 | **Versión** | V1.0 |
 | **Estado** | Jugable: intro, menús, gameplay y audio, a **30 fps** con el reloj original de la consola |
-| **Descarga** | [`sh3.nro`](https://github.com/gerisson1996/SILENT-HILL-HD-COLLECTION-NX/raw/main/release/sh3.nro) (carpeta [`release/`](release/)) |
+| **Descarga** | `sh3.nro` y `SH3-NX-V1.0.zip` en [Releases](https://github.com/gerisson1996/SILENT-HILL-HD-COLLECTION-NX/releases/latest) |
 | **Próximo** | Android e iOS; después Silent Hill 2 de la misma colección |
 
 ### ☕ Apoya el proyecto
@@ -27,9 +27,8 @@ Si el port te resultó útil, considera apoyar:
 - **Pix:** `pocketneogames@gmail.com`
 
 > [!IMPORTANT]
-> Este repositorio **no contiene los archivos del juego** (el `.xex`, vídeos, texturas, sonidos) ni el código C++
-> generado a partir de él; solo el port compilado en `release/sh3.nro`. Necesitas tu propia copia original de Silent
-> Hill HD Collection para Xbox 360.
+> Este repositorio **no contiene ningún archivo del juego** ni el código generado a partir de él. Necesitas tu propia
+> copia original de Silent Hill HD Collection para Xbox 360.
 
 ---
 

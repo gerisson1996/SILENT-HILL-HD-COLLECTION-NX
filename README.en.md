@@ -11,7 +11,7 @@ natively, with the Xbox 360's Direct3D 9 rewritten on top of deko3d, the Switch'
 |---|---|
 | **Version** | V1.0 |
 | **State** | Playable: intro, menus, gameplay and audio, at **30 fps** at the console's stock clock |
-| **Download** | [`sh3.nro`](https://github.com/gerisson1996/SILENT-HILL-HD-COLLECTION-NX/raw/main/release/sh3.nro) (folder [`release/`](release/)) |
+| **Download** | `sh3.nro` and `SH3-NX-V1.0.zip` in [Releases](https://github.com/gerisson1996/SILENT-HILL-HD-COLLECTION-NX/releases/latest) |
 | **Next** | Android and iOS; then Silent Hill 2 from the same collection |
 
 ### ☕ Support the project
@@ -27,9 +27,8 @@ If the port was useful to you, please consider supporting:
 - **Pix:** `pocketneogames@gmail.com`
 
 > [!IMPORTANT]
-> This repository **does not contain the game's files** (the `.xex`, videos, textures, sounds) nor the C++ code
-> generated from it; only the built port in `release/sh3.nro`. You need your own original copy of Silent Hill HD
-> Collection for Xbox 360.
+> This repository **contains no game files** and no code generated from them. You need your own original copy of
+> Silent Hill HD Collection for Xbox 360.
 
 ---
 
